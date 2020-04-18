@@ -31,6 +31,11 @@ namespace WebAPI
         {
             services.AddSingleton<IBookService, BookManager>();
             services.AddSingleton<IBookDal, EfBookDal>();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowOrigin",
+                    builder => builder.WithOrigins("http://localhost:4200"));
+            });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
@@ -46,6 +51,7 @@ namespace WebAPI
             {
                 app.UseHsts();
             }
+            app.UseCors(builder => builder.WithOrigins("http://localhost:4200").AllowAnyHeader());
 
             app.UseHttpsRedirection();
             app.UseMvc();
